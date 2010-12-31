@@ -9,28 +9,28 @@ BEGIN {
 }
 
 use Hash::Merge;
-use base 'Email::Stuff';
+use Email::Stuff;
 
 # use Data::Dumper qw/Dumper/;
 
 sub new {
     my $class  = shift;
-    my $params = shift;
+    my $params = shift || {};
     my $self   = { settings => $params };
     bless $self, $class;
     return $self;
 }
 
 sub email {
-    return Emailesque->new->send(shift);
+    return Emailesque->new(@_)->send({});
 }
 
 sub send {
     my ($this, $options, @arguments)  = @_;
     my $self = Email::Stuff->new;
-    
-    #$options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($this->{settings}, $options);
-    $options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($options, $this->{settings}); # requested by igor.bujna@post.cz
+    my $settings = $this->{settings};
+    #$options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($settings, $options);
+    $options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($options, $settings); # requested by igor.bujna@post.cz
     
     # process to
     if ($options->{to}) {

@@ -14,14 +14,15 @@ use Email::AddressParser;
 
 # use Data::Dumper qw/Dumper/;
 
-sub new {
+sub new { 
     my $class  = shift;
-    my $params = shift || {
-        driver => 'sendmail',
-        path   => '/usr/bin/sendmail'
-    };
+    my $params = shift;
+    
+    $params->{driver} = 'sendmail' unless defined $params->{driver};
+    $params->{path}   = '/usr/bin/sendmail' unless defined $params->{path};
+    
     my $self   = { settings => $params };
-    bless $self, $class;
+    bless $self, $class; 
     return $self;
 }
 
@@ -117,8 +118,12 @@ sub send {
         if (lc($settings->{driver}) eq lc("sendmail")) {
             $self->{send_using} = ['Sendmail', $settings->{path}];
             # failsafe
-            $Email::Send::Sendmail::SENDMAIL = $settings->{path} unless
-                $Email::Send::Sendmail::SENDMAIL;
+            
+            $Email::Send::Sendmail::SENDMAIL = $settings->{path} if
+                defined $settings->{path};
+            
+            #$Email::Send::Sendmail::SENDMAIL = $settings->{path} unless
+            #    $Email::Send::Sendmail::SENDMAIL;
         }
         if (lc($settings->{driver}) eq lc("smtp")) {
             if ($settings->{host} && $settings->{user} && $settings->{pass}) {

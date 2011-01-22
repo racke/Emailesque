@@ -37,8 +37,8 @@ sub send {
     #$options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($settings, $options);
     $options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($options, $settings); # requested by igor.bujna@post.cz
     
-    #die "cannot send mail without a sender, recipient, subject and message" unless
-    #    $options->{to} && $options->{from} && $options->{subject} && $options->{message};
+    die "cannot send mail without a sender, recipient, subject and message" unless
+        $options->{to} && $options->{from} && $options->{subject} && $options->{message};
     
     # process to
     if ($options->{to}) {

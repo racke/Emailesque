@@ -114,7 +114,7 @@ sub send {
     }
 
     # some light error handling
-    die 'specify type multi if sending text and html'
+    die 'email error: specify type multi if sending text and html'
         if lc($options->{type}) eq 'multi' && "HASH" eq ref $options->{type};
         
     # okay, go team, go

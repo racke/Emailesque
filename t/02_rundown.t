@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 3;
 use Test::Exception;
 
 BEGIN { 
@@ -14,18 +14,14 @@ my $msg = {
     path    => '/usr/sbin/sendmail',
 };
 
-my $e = email();
+eval { email() };
 
 # using email keyword
 
-ok ! email(), 'email with no args fails';
-
-ok ! $e, 'email with no args fails';
+ok $@, 'email with no args dies';
 
 # using OO style
 
-ok ! Emailesque->new->send(), 'oo email with no args fails';
+eval { Emailesque->new->send() };
 
-$e = Emailesque->new->send(); $e = "$e" unless $e;
-
-ok $e, 'oo email with no args fails with msg - ' . $e;
+ok $@, 'oo email with no args fails';

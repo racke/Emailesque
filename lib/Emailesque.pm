@@ -37,27 +37,31 @@ sub send {
     #$options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($settings, $options);
     $options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($options, $settings); # requested by igor.bujna@post.cz
     
+    #die "cannot send mail without a sender, recipient, subject and message" unless
+    #    $options->{to} && $options->{from} && $options->{subject} && $options->{message};
+    
     # process to
     if ($options->{to}) {
         $self->to(
-        join ",", Email::AddressParser->parse( $options->{to} ) );
+        join ",", map { $_->format } Email::AddressParser->parse( $options->{to} ) );
     }
     
     # process from
     if ($options->{from}) {
-        $self->from($options->{from});
+        $self->from(
+        join ",", map { $_->format } Email::AddressParser->parse( $options->{from} ) );
     }
     
     # process cc
     if ($options->{cc}) {
         $self->cc(
-        join ",", Email::AddressParser->parse( $options->{cc} ) );
+        join ",",  map { $_->format } Email::AddressParser->parse( $options->{cc} ) );
     }
     
     # process bcc
     if ($options->{bcc}) {
         $self->bcc(
-        join ",", Email::AddressParser->parse( $options->{bcc} ) );
+        join ",",  map { $_->format } Email::AddressParser->parse( $options->{bcc} ) );
     }
     
     # process reply_to

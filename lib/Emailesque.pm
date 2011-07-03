@@ -130,8 +130,6 @@ sub send {
             #    $Email::Send::Sendmail::SENDMAIL;
         }
         if (lc($settings->{driver}) eq lc("smtp")) {
-            if ($settings->{host} && $settings->{user} && $settings->{pass}) {
-                
                 my   @parameters = ();
                 push @parameters, 'Host' => $settings->{host} if $settings->{host};
                 push @parameters, 'Port'  => $settings->{port} if $settings->{port};
@@ -146,10 +144,6 @@ sub send {
                 push @parameters, 'Debug' => 1 if $settings->{debug};
                 
                 $self->{send_using} = ['SMTP', @parameters];
-            }
-            else {
-                $self->{send_using} = ['SMTP', Host => $settings->{host}];
-            }
         }
         if (lc($settings->{driver}) eq lc("qmail")) {
             $self->{send_using} = ['Qmail', $settings->{path}];
